@@ -9,8 +9,8 @@ cd ${wkdir}
 
 ###  Code  ###
 
-rm ${outdir}/${allele}*.vcf.gz*
-rm ${outdir}/${allele}_Genotype.tsv
+#rm ${outdir}/${allele}*.vcf.gz*
+#rm ${outdir}/${allele}_Genotype.tsv
 
 touch ${outdir}/${allele}.done
 
