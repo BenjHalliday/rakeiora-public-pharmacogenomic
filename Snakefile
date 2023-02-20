@@ -33,7 +33,7 @@ rule makeAlleleFiles:
     input:
         vcf = resourcedir + inputvcffile
     output:
-        o1 = outdir + "{allele}.vcf.gz.tbi"
+        o1 = outdir + "{allele}.vcf.gz"
     log: 
         logdir + "makeAlleleFiles.{allele}.log"
     shell:
@@ -44,7 +44,7 @@ rule makeAlleleFiles:
 # need to figure out how to manipulate ALLELES array into GENE array
 rule GeneVCFtoGenotype:
     input:
-        outdir + "{allele}.vcf.gz.tbi"
+        outdir + "{allele}.vcf.gz"
     output:
         outdir + "{allele}_Genotype.tsv"
     log: 
