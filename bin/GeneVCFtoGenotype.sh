@@ -58,12 +58,12 @@ bcftools index --tbi ${outdir}/${allele}_present.vcf.gz
 bcftools filter --set-GTs . -T ^${outdir}/${allele}_present.vcf.gz -o ${outdir}/${allele}_missing.vcf.gz -O z  ${varvcf}.gz
 bcftools index --tbi ${outdir}/${allele}_missing.vcf.gz 
 
-bcftools merge --missing-to-ref -o ${outdir}/${allele}.vcf.gz -O z ${outdir}/${allele}_present.vcf.gz ${outdir}/${allele}_missing.vcf.gz 
+bcftools merge --missing-to-ref -o ${outdir}/${allele}_Genotype.vcf.gz -O z ${outdir}/${allele}_present.vcf.gz ${outdir}/${allele}_missing.vcf.gz 
 bcftools index --tbi ${outdir}/${allele}.vcf.gz 
 
 ###  Output star allele VCF as a Genotype TSV for input into the next stage  ###
 sample=$(zcat ${outdir}/${allele}.vcf.gz | grep '^#CHROM' | cut -f 10-)
 echo -e "CHROM\tPOS\t${sample}" > ${outdir}/${allele}_Genotype.tsv
-bcftools query -f '%CHROM\t%POS\t[%GT\t]\n' ${outdir}/${allele}.vcf.gz >> ${outdir}/${allele}_Genotype.tsv
+bcftools query -f '%CHROM\t%POS\t[%GT\t]\n' ${outdir}/${allele}_Genotype.vcf.gz >> ${outdir}/${allele}_Genotype.tsv
 
 exit 0
