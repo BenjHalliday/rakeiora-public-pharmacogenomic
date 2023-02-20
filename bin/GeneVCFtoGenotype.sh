@@ -52,6 +52,8 @@ varvcf=${pharmvar}/${gene}/GRCh38/${varmatch}.vcf
 #    tabix -p vcf ${varvcf}.gz
 #fi
 
+bcftools index --tbi ${outdir}/${allele}.vcf.gz
+
 bcftools filter --set-GTs . -R ${varvcf}.gz -o ${outdir}/${allele}_present.vcf.gz -O z ${outdir}/${allele}.vcf.gz
 bcftools index --tbi ${outdir}/${allele}_present.vcf.gz 
 
@@ -59,7 +61,7 @@ bcftools filter --set-GTs . -T ^${outdir}/${allele}_present.vcf.gz -o ${outdir}/
 bcftools index --tbi ${outdir}/${allele}_missing.vcf.gz 
 
 bcftools merge --missing-to-ref -o ${outdir}/${allele}_Genotype.vcf.gz -O z ${outdir}/${allele}_present.vcf.gz ${outdir}/${allele}_missing.vcf.gz 
-bcftools index --tbi ${outdir}/${allele}.vcf.gz 
+bcftools index --tbi ${outdir}/${allele}_Genotype.vcf.gz 
 
 ###  Output star allele VCF as a Genotype TSV for input into the next stage  ###
 sample=$(zcat ${outdir}/${allele}.vcf.gz | grep '^#CHROM' | cut -f 10-)
