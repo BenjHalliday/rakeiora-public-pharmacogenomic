@@ -54,7 +54,9 @@ for(group in groups) {
 
 	read.table(get(paste0(prefix,"file")), header = FALSE, sep=",") -> drugs
 	colnames(drugs) <- c("ID","ALEA_ID","Drug")
-
+	drugs$ID <- toupper(drugs$ID)
+	HaplotypeAnnotations$ID <- toupper(HaplotypeAnnotations$ID)
+	
 	as.character(HaplotypeAnnotations$Drug) %>% gsub("\\\"","",. ) -> HaplotypeAnnotations$Drug
 	HaplotypeAnnotations %>% separate_rows(., Drug, convert = TRUE) %>% unique() -> HaplotypeAnnotations_DrugSplit
 
