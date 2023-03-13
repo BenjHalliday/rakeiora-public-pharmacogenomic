@@ -82,6 +82,7 @@ for(group in groups) {
 	Sample_Index_HapDrug %>% filter(Drug == drug) %>% select(ID) %>% pull() -> Hit_ID
 	setdiff(All_ID,Hit_ID) -> Miss_ID
 	
+	Haplotypes$DrugStatus <- NA
 	Haplotypes$DrugStatus[Haplotypes$ID %in% Hit_ID] <- paste0(group,"\n",str_to_title(drug))
 	Haplotypes$DrugStatus[Haplotypes$ID %in% Miss_ID] <- paste0("Not ",group,"\n",str_to_title(drug))
 	
