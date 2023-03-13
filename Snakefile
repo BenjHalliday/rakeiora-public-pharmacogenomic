@@ -131,7 +131,8 @@ rule HaplotypeDrugAnnotationtoSpecificDrugAnnotation:
         i2 = druglistpres,
         i3 = druglistdisp
     output:
-        outdir + "{allele}_Haplotype_Distribution_{drug}.pdf",
+        outdir + "{allele}_Haplotype_Distribution_Prescribed_{drug}.pdf",
+        outdir + "{allele}_Haplotype_Distribution_Dispensed_{drug}.pdf",
         outdir + "{allele}_Haplotype_Annotation_Summary_Prescribed_{drug}.tsv",
         outdir + "{allele}_Haplotype_Annotation_Summary_Dispensed_{drug}.tsv"
     log: 
