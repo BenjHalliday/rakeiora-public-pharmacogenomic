@@ -78,12 +78,12 @@ for(group in groups) {
 for(group in groups) { 
 	prefix <- prefixes[which(groups==group)]
 
-	Sample_Index %>% select(Sample) %>% pull() %>% unique() -> All_ID
-	Sample_Index_HapDrug %>% filter(Drug == drug) %>% select(Sample) %>% pull() -> Hit_ID
+	Sample_Index %>% select(ID) %>% pull() %>% unique() -> All_ID
+	Sample_Index_HapDrug %>% filter(Drug == drug) %>% select(ID) %>% pull() -> Hit_ID
 	setdiff(All_ID,Hit_ID) -> Miss_ID
 	
-	Haplotypes$DrugStatus[Haplotypes$Sample %in% Hit_ID] <- paste0(group,"\n",str_to_title(drug))
-	Haplotypes$DrugStatus[Haplotypes$Sample %in% Miss_ID] <- paste0("Not ",group,"\n",str_to_title(drug))
+	Haplotypes$DrugStatus[Haplotypes$ID %in% Hit_ID] <- paste0(group,"\n",str_to_title(drug))
+	Haplotypes$DrugStatus[Haplotypes$ID %in% Miss_ID] <- paste0("Not ",group,"\n",str_to_title(drug))
 	
 	factor(Haplotypes$DrugStatus,levels=c(paste0(group,"\n",str_to_title(drug)),paste0("Not ",group,"\n",str_to_title(drug)))) -> Haplotypes$DrugStatus
 	
