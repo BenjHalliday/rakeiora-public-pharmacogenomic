@@ -175,3 +175,4 @@ rule Cleanup:
         logdir + "Cleanup.{allele}.log"
     shell:
         "bin/Cleanup.sh $PWD {outdir} {wildcards.allele} &> {log}"
+        
