@@ -55,19 +55,19 @@ for(group in groups) {
 	read.table(get(paste0(prefix,"file")), header = FALSE, sep=",") -> drugs
 	colnames(drugs) <- c("ID","ALEA_ID","Drug")
 	drugs$ID <- toupper(drugs$ID)
-	HaplotypeAnnotations$ID <- toupper(HaplotypeAnnotations$ID)
+	Haplotypes$ID <- toupper(Haplotypes$ID)
 	
+	left_join(Haplotypes,drugs) -> Sample_Index
+	write.table(Sample_Index, file = paste0(outdir,allele,"_Haplotype_Annotation_Summary_",group,".tsv"),sep="\t",row.names=F)
+	
+	### Filtered Annotations
 	as.character(HaplotypeAnnotations$Drug) %>% gsub("\\\"","",. ) -> HaplotypeAnnotations$Drug
 	HaplotypeAnnotations %>% separate_rows(., Drug, convert = TRUE) %>% unique() -> HaplotypeAnnotations_DrugSplit
 
-	left_join(Haplotypes,drugs) -> Sample_Index
-	write.table(Sample_Index, file = paste0(outdir,allele,"_Haplotype_Annotation_Summary_",group,".tsv"),sep="\t",row.names=F)
-
 	Sample_Index %>% filter(Drug %in% HaplotypeAnnotations_DrugSplit$Drug) -> Sample_Index_HapDrug
-	
-	### Filtered Annotations
-	HaplotypeAnnotations_DrugSplit %>% filter(Drug == drug) -> HaplotypeAnnotations_DrugSplit_Filter
 	Sample_Index_HapDrug %>% filter(Drug == drug) -> Sample_Index_HapDrug_Filter
+
+	HaplotypeAnnotations_DrugSplit %>% filter(Drug == drug) -> HaplotypeAnnotations_DrugSplit_Filter
 	
 	left_join(Sample_Index_HapDrug_Filter,HaplotypeAnnotations_DrugSplit_Filter,by="Drug") -> Sample_Index_HapDrug_Annotations
 	write.table(Sample_Index_HapDrug_Annotations, file = paste0(outdir,allele,"_Haplotype_Annotation_Summary_",group,"_",drug,".tsv"),sep="\t",row.names=F)
