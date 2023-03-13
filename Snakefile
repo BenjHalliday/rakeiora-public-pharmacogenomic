@@ -128,8 +128,8 @@ rule HaplotypeDrugAnnotation:
 rule HaplotypeDrugAnnotationtoSpecificDrugAnnotation:
     input:
         i1 = outdir + "{allele}_Haplotype_PharmGKBAnnotation.tsv",
-        i2 = outdir + druglistpres,
-        i3 = outdir + druglistdisp
+        i2 = druglistpres,
+        i3 = druglistdisp
     output:
         outdir + "{allele}_Haplotype_Distribution_{drug}.pdf",
         outdir + "{allele}_Haplotype_Annotation_Summary_Prescribed_{drug}.tsv",
