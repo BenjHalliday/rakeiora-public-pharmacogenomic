@@ -40,7 +40,7 @@ print("Packages Loaded")
 
 read.table(paste0(outdir,allele,"_Haplotype.tsv"), header = T,sep="\t")  -> Haplotypes
 read.delim(paste0(outdir,allele,"_Haplotype_PharmGKBAnnotation.tsv"), header = T,sep="\t",quote="")  -> HaplotypeAnnotations
-colnames(HaplotypeAnnotations) <- c("ID","StudyHaplotype","Gene","Drug","PMID","Phenotype","Significance","Notes","Sentence","Alleles","Population")
+colnames(HaplotypeAnnotations) <- c("VariantAnnotationID","Haplotype","Gene","Drug","PMID","Phenotype","Significance","Notes","Sentence","Alleles","Population")
 
 ####################################################################################################################
 ###                                                Data Manipulation                                            ####
