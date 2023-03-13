@@ -135,11 +135,11 @@ rule HaplotypeDrugAnnotationtoSpecificDrugAnnotation:
         outdir + "{allele}_Haplotype_Annotation_Summary_Prescribed_{drug}.tsv",
         outdir + "{allele}_Haplotype_Annotation_Summary_Dispensed_{drug}.tsv"
     log: 
-        logdir + "HaplotypeDrugAnnotationtoSpecificDrugAnnotation.{allele}.{drug}.log"
+        logdir + "HaplotypeDrugAnnotationtoSampleDrugAnnotation.{allele}.{drug}.log"
     container:
         singdir + RSingularity
     shell:
-        "Rscript bin/HaplotypeDrugAnnotationSampleDrugAnnotation.R $PWD {outdir} {wildcards.allele} {wildcards.drug} {input.i2} {input.i3} &> {log}"
+        "Rscript bin/HaplotypeDrugAnnotationtoSampleDrugAnnotation.R $PWD {outdir} {wildcards.allele} {wildcards.drug} {input.i2} {input.i3} &> {log}"
 
 #####################     Module 3 - Report and Cleanup      ###########################
 
