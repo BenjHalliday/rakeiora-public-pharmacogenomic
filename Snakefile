@@ -125,7 +125,7 @@ rule HaplotypeDrugAnnotation:
 #    shell:
 #        "Rscript bin/HaplotypeDrugAnnotationtoSampleDrugAnnotation.R $PWD {outdir} {wildcards.allele} {input.i2} {input.i3} &> {log}"
 
-rule HaplotypeDrugAnnotationtoSpecificDrugAnnotation:
+rule HaplotypeDrugAnnotationtoSampleDrugAnnotation:
     input:
         i1 = outdir + "{allele}_Haplotype_PharmGKBAnnotation.tsv",
         i2 = druglistpres,
@@ -144,9 +144,10 @@ rule HaplotypeDrugAnnotationtoSpecificDrugAnnotation:
 
 #####################     Module 3 - Report and Cleanup      ###########################
 
-rule report:
+rule Report:
     input:
-        outdir + "{allele}_Haplotype_Distribution_{drug}.pdf",
+        outdir + "{allele}_Haplotype_Distribution_Prescribed_{drug}.pdf",
+        outdir + "{allele}_Haplotype_Distribution_Dispensed_{drug}.pdf",
         outdir + "{allele}_Haplotype_Annotation_Summary_Prescribed_{drug}.tsv",
         outdir + "{allele}_Haplotype_Annotation_Summary_Dispensed_{drug}.tsv",
         outdir + "{allele}_Haplotype_Distribution.pdf"
@@ -165,7 +166,7 @@ rule report:
         
         """, output[0], File=input[0] )
 
-rule cleanup:
+rule Cleanup:
     input:
         outdir + "{allele}_Haplotype_Distribution.pdf"
     output:
