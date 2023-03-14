@@ -68,7 +68,7 @@ for(group in groups) {
 	Sample_Index_HapDrug %>% filter(Drug == drug) -> Sample_Index_HapDrug_Filter
 
 	HaplotypeAnnotations_DrugSplit %>% filter(Drug == drug) -> HaplotypeAnnotations_DrugSplit_Filter
-	write.table(HaplotypeAnnotations_DrugSplit_Filter, file = paste0(outdir,allele,"__Haplotype_PharmGKBAnnotation_",drug,".tsv"),sep="\t",row.names=F)
+	write.table(HaplotypeAnnotations_DrugSplit_Filter, file = paste0(outdir,allele,"_Haplotype_PharmGKBAnnotation_",drug,".tsv"),sep="\t",row.names=F)
 	
 	left_join(Sample_Index_HapDrug_Filter,HaplotypeAnnotations_DrugSplit_Filter,by="Drug") -> Sample_Index_HapDrug_Annotations
 	write.table(Sample_Index_HapDrug_Annotations, file = paste0(outdir,allele,"_Haplotype_Annotation_Summary_",group,"_",drug,".tsv"),sep="\t",row.names=F)
