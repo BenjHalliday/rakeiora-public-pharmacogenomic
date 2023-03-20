@@ -14,4 +14,4 @@ cd ${wkdir}
 
 touch ${outdir}/${allele}.done
 
-exit
+exit 0
