@@ -29,3 +29,4 @@ druglistdisp  : "alea/alea_prescribed.csv"
 # inputvcffile should be the filename defined in the workflow input in Rakeiora.
 # Rakeiora will create this multi-sample vcf.gz file from your selections.
 inputvcffile  : "input.vcf.gz"
+
