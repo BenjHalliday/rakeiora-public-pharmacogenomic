@@ -28,7 +28,6 @@ rule all:
         expand(outdir + '{allele}_{drug}_Report.html', allele= ALLELES, drug= DRUGS),
         expand(outdir + '{allele}.done', allele= ALLELES)
 
-
 #####################     Module 1 - Genotype Manipulation       ###########################
 
 rule makeAlleleFiles:
