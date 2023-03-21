@@ -26,4 +26,4 @@ do
     echo -e "${id}\t${allele}\t${geno}" >> ${outdir}/${allele}_Haplotype.tsv
 done
 
-exit
+exit 0
