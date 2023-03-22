@@ -65,14 +65,14 @@ for(group in groups) {
 	HaplotypeAnnotations <- HaplotypeAnnotations %>% separate_rows(., Drug, convert = TRUE, sep = ",\"") %>% unique() #separate out , delimitated entries onto separate lines
 	HaplotypeAnnotations$Drug <- HaplotypeAnnotations$Drug %>% as.character() %>% gsub("\\\"","",. ) %>% gsub(" .*", "", .) %>% tolower() #convert to lowercase, remove forward slahes, and removal all but the first word
 
-	HaplotypeAnnotations_DrugSplit %>% filter(Drug == drug) -> HaplotypeAnnotations_DrugSplit_Filter
-	write.table(HaplotypeAnnotations_DrugSplit_Filter, file = paste0(outdir,allele,"_Haplotype_PharmGKBAnnotation_",drug,".tsv"),sep="\t",row.names=F)
+	HaplotypeAnnotations %>% filter(Drug == drug) -> HaplotypeAnnotations_Filter
+	write.table(HaplotypeAnnotations_Filter, file = paste0(outdir,allele,"_Haplotype_PharmGKBAnnotation_",drug,".tsv"),sep="\t",row.names=F)
 
 	### Merged Participant Data Filtering
-	Sample_Index %>% filter(Drug %in% HaplotypeAnnotations_DrugSplit$Drug) -> Sample_Index_HapDrug
+	Sample_Index %>% filter(Drug %in% HaplotypeAnnotations$Drug) -> Sample_Index_HapDrug
 	Sample_Index_HapDrug %>% filter(Drug == drug) -> Sample_Index_HapDrug_Filter
 	
-	left_join(Sample_Index_HapDrug_Filter,HaplotypeAnnotations_DrugSplit_Filter,by="Drug") -> Sample_Index_HapDrug_Annotations
+	left_join(Sample_Index_HapDrug_Filter,HaplotypeAnnotations_Filter,by="Drug") -> Sample_Index_HapDrug_Annotations
 	write.table(Sample_Index_HapDrug_Annotations, file = paste0(outdir,allele,"_Haplotype_Annotation_Summary_",group,"_",drug,".tsv"),sep="\t",row.names=F)
 }
 
