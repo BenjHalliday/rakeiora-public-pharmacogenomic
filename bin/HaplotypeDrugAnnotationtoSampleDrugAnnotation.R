@@ -34,16 +34,11 @@ if(!require(tidyverse,quietly=TRUE,warn.conflicts=FALSE)){
 print("Packages Loaded")
 
 ####################################################################################################################
-###                                               Load in Data                                                  ####
-####################################################################################################################
-
-read.table(paste0(outdir,allele,"_Haplotype.tsv"), header = T,sep="\t")  -> Haplotypes
-read.delim(paste0(outdir,allele,"_Haplotype_PharmGKBAnnotation.tsv"), header = T,sep="\t",quote="")  -> HaplotypeAnnotations
-colnames(HaplotypeAnnotations) <- c("VariantAnnotationID","AnnotationHaplotype","Gene","Drug","PMID","Phenotype","Significance","Notes","Sentence","Alleles","Population")
-
-####################################################################################################################
 ###                                                Data Manipulation                                            ####
 ####################################################################################################################
+
+
+#this assumes that the key drug information is the first word which may not hold true for all entries but is needed for practicality 
 
 groups <- c("Prescribed","Dispensed")
 prefixes <- c("pres","disp")
@@ -51,17 +46,24 @@ prefixes <- c("pres","disp")
 for(group in groups) { 
 	prefix <- prefixes[which(groups==group)]
 
-	read.table(get(paste0(prefix,"file")), header = FALSE, sep=",") -> drugs
-	colnames(drugs) <- c("ID","ALEA_ID","Drug")
-	drugs$ID <- toupper(drugs$ID)
-	Haplotypes$ID <- toupper(Haplotypes$ID)
+	### Format Participant Drug Data
+	drugs <- read.table(get(paste0(prefix,"file")), header = FALSE, sep=",", colClasses=rep("character" ,3), stringsAsFactors = FALSE) %>% `colnames<-`(c("ID","ALEA_ID","Drug"))
+	drugs <- drugs %>% separate_rows(., Drug, convert = TRUE, sep = ";") %>% separate_rows(., Drug, convert = TRUE, sep = " with ") %>% unique() #separate out ; delimitated (prescribed) or ' with ' delimitated (dispensed) entries onto separate lines
+	drugs$Drug <- drugs$Drug %>% tolower() %>% gsub(" .*", "", .) #convert to lowercase and removal all but the first word #gsub("([A-Za-z]+).*", "\\1" ,.)
+	drugs$ID <- toupper(drugs$ID) #genotype data has uppercase [A-Z], so converted here for consistency
 	
-	left_join(Haplotypes,drugs) -> Sample_Index
+	### Format Participant Haplotype Data
+	Haplotypes <- read.table(paste0(outdir,allele,"_Haplotype.tsv"), header = T,sep="\t")
+	Haplotypes$ID <- toupper(Haplotypes$ID) #converted here for consistency
+	
+	### Merge Participant Drug and Haplotype Data
+	Sample_Index <- left_join(Haplotypes,drugs)
 	write.table(Sample_Index, file = paste0(outdir,allele,"_Haplotype_Annotation_Summary_",group,".tsv"),sep="\t",row.names=F)
 	
-	### Filtered Annotations
-	as.character(HaplotypeAnnotations$Drug) %>% gsub("\\\"","",. ) -> HaplotypeAnnotations$Drug
-	HaplotypeAnnotations %>% separate_rows(., Drug, convert = TRUE) %>% unique() -> HaplotypeAnnotations_DrugSplit
+	### Format PharmGKB Annotation Data
+	HaplotypeAnnotations <- read.delim(paste0(outdir,allele,"_Haplotype_PharmGKBAnnotation.tsv"), header = T,sep="\t",quote="") %>% `colnames<-`(c("VariantAnnotationID","AnnotationHaplotype","Gene","Drug","PMID","Phenotype","Significance","Notes","Sentence","Alleles","Population"))
+	HaplotypeAnnotations <- HaplotypeAnnotations %>% separate_rows(., Drug, convert = TRUE, sep = ",\"") %>% unique() #separate out , delimitated entries onto separate lines
+	HaplotypeAnnotations$Drug <- HaplotypeAnnotations$Drug %>% as.character() %>% gsub("\\\"","",. ) %>% gsub(" .*", "", .) %>% tolower() #convert to lowercase, remove forward slahes, and removal all but the first word
 
 	Sample_Index %>% filter(Drug %in% HaplotypeAnnotations_DrugSplit$Drug) -> Sample_Index_HapDrug
 	Sample_Index_HapDrug %>% filter(Drug == drug) -> Sample_Index_HapDrug_Filter
@@ -123,3 +125,17 @@ for(group in groups) {
 ####################################################################################################################
 
 quit()
+
+read.table("Prescribed_Mock.txt", header = FALSE, sep=",", colClasses=rep("character" ,3), stringsAsFactors = FALSE) -> drugs
+colnames(drugs) <- 
+drugs <- drugs %>% separate_rows(., Drug, convert = TRUE, sep = ";") %>% unique()
+drugs$Drug <- drugs$Drug %>% tolower() %>% gsub("([A-Za-z]+).*", "\\1" ,.)
+drugs$ID <- toupper(drugs$ID)
+
+
+read.table("Dispensed_Mock.txt", header = FALSE, sep=",", colClasses=rep("character" ,3), stringsAsFactors = FALSE) -> drugs
+
+set_colnames(c("ID","ALEA_ID","Drug"))
+
+read.table("Analysis/RawData/PharmGKB/PharmGKB_Annotations_Drug-Haplotype.tsv", header = T,sep="\t",quote="") -> HaplotypeAnnotations
+
