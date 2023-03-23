@@ -49,7 +49,7 @@ for(group in groups) {
 	### Format Participant Drug Data
 	drugs <- read.table(get(paste0(prefix,"file")), header = FALSE, sep=",", colClasses=rep("character" ,3), stringsAsFactors = FALSE) %>% `colnames<-`(c("ID","ALEA_ID","Drug"))
 	drugs <- drugs %>% separate_rows(., Drug, convert = TRUE, sep = ";") %>% separate_rows(., Drug, convert = TRUE, sep = " with ") %>% unique() #separate out ; delimitated (prescribed) or ' with ' delimitated (dispensed) entries onto separate lines
-	drugs$Drug <- drugs$Drug %>% tolower() %>% gsub(" .*", "", .) #convert to lowercase and removal all but the first word #gsub("([A-Za-z]+).*", "\\1" ,.)
+	drugs$Drug <- drugs$Drug %>% trimws(which = "both") %>% tolower() %>% gsub(" .*", "", .) #convert to lowercase and removal all but the first word #gsub("([A-Za-z]+).*", "\\1" ,.)
 	drugs$ID <- toupper(drugs$ID) #genotype data has uppercase [A-Z], so converted here for consistency
 	
 	### Format Participant Haplotype Data
@@ -63,7 +63,7 @@ for(group in groups) {
 	### Format PharmGKB Annotation Data
 	HaplotypeAnnotations <- read.delim(paste0(outdir,allele,"_Haplotype_PharmGKBAnnotation.tsv"), header = T,sep="\t",quote="") %>% `colnames<-`(c("VariantAnnotationID","AnnotationHaplotype","Gene","Drug","PMID","Phenotype","Significance","Notes","Sentence","Alleles","Population"))
 	HaplotypeAnnotations <- HaplotypeAnnotations %>% separate_rows(., Drug, convert = TRUE, sep = ",\"") %>% unique() #separate out , delimitated entries onto separate lines
-	HaplotypeAnnotations$Drug <- HaplotypeAnnotations$Drug %>% as.character() %>% gsub("\\\"","",. ) %>% gsub(" .*", "", .) %>% tolower() #convert to lowercase, remove forward slahes, and removal all but the first word
+	HaplotypeAnnotations$Drug <- HaplotypeAnnotations$Drug %>% trimws(which = "both") %>% as.character() %>% gsub("\\\"","",. ) %>% gsub(" .*", "", .) %>% tolower() #convert to lowercase, remove forward slahes, and removal all but the first word
 
 	HaplotypeAnnotations %>% filter(Drug == drug) -> HaplotypeAnnotations_Filter
 	write.table(HaplotypeAnnotations_Filter, file = paste0(outdir,allele,"_Haplotype_PharmGKBAnnotation_",drug,".tsv"),sep="\t",row.names=F)
