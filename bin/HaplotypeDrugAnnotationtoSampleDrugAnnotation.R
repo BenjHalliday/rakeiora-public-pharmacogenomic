@@ -47,9 +47,9 @@ for(group in groups) {
 	prefix <- prefixes[which(groups==group)]
 
 	### Format Participant Drug Data
-	drugs <- read.table(get(paste0(prefix,"file")), header = FALSE, sep=",", colClasses=rep("character" ,3), stringsAsFactors = FALSE) %>% `colnames<-`(c("ID","ALEA_ID","Drug"))
-	drugs <- drugs %>% separate_rows(., Drug, convert = TRUE, sep = ";") %>% separate_rows(., Drug, convert = TRUE, sep = " with ") %>% unique() #separate out ; delimitated (prescribed) or ' with ' delimitated (dispensed) entries onto separate lines
-	drugs$Drug <- drugs$Drug %>% trimws(which = "both") %>% tolower() %>% gsub(" .*", "", .) #convert to lowercase and removal all but the first word #gsub("([A-Za-z]+).*", "\\1" ,.)
+	drugs <- read.table(get(paste0(prefix,"file")), header = FALSE, sep=",", colClasses=rep("character" ,2), stringsAsFactors = FALSE) %>% unique() %>% `colnames<-`(c("ID","ALEA_ID","Drug"))
+	#drugs <- drugs %>% separate_rows(., Drug, convert = TRUE, sep = ";") %>% separate_rows(., Drug, convert = TRUE, sep = " with ") %>% unique() #separate out ; delimitated (prescribed) or ' with ' delimitated (dispensed) entries onto separate lines
+	drugs$Drug <- drugs$Drug %>% trimws(which = "both") %>% tolower() #%>% gsub(" .*", "", .) #convert to lowercase and removal all but the first word #gsub("([A-Za-z]+).*", "\\1" ,.)
 	drugs$ID <- toupper(drugs$ID) #genotype data has uppercase [A-Z], so converted here for consistency
 	
 	### Format Participant Haplotype Data
