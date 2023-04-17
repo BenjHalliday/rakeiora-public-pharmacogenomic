@@ -6,7 +6,7 @@
 # Be sure to tick the "drop chr" option.
 ALLELES       : ["CYP2C19*2", "CYP2C19*3","CYP2C19*17"]
 
-# DRUGS should be in the "drug(s)" column of pharmgkb file (below)
+# DRUGS should be in the "drug(s)" column of pharmgkb file (below), only single word drugs can be used (this will result in issues with drugs such as Vitamins)
 DRUGS         : ["clopidogrel", "warfarin"]
 
 # /logs and /results will be copied to jupyter hub
@@ -21,8 +21,8 @@ pharmvar      : "/shared/reference/PharmVar/pharmvar-5.1.15"
 RSingularity  : "R_tidyverse.sif"
 BCFSingularity: "bcftools_v1.16.sif"
 
-druglistpres  : "alea/alea_dispensed_chemical.csv"
-druglistdisp  : "alea/alea_prescribed.csv"
+druglistpres  : "alea/dispensed.csv"
+druglistdisp  : "alea/dispensed.csv"
 #druglistfile  : "Drug_List.tsv"
 #idlistfile    : "idlist.tsv" 
 
