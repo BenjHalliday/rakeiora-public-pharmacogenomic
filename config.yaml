@@ -7,7 +7,7 @@
 ALLELES       : ["CYP2C19*2", "CYP2C19*3","CYP2C19*17"]
 
 # DRUGS should be in the "drug(s)" column of pharmgkb file (below), only single word drugs can be used (this will result in issues with drugs such as Vitamins)
-DRUGS         : ["clopidogrel", "warfarin"]
+DRUGS         : ["amitriptyline","citalopram","clopidogrel","clozapine","diazepam","escitalopram","esomeprazole","nortriptyline","omeprazole","sertraline","warfarin"]
 
 # /logs and /results will be copied to jupyter hub
 outdir        : "results/"
@@ -22,7 +22,7 @@ RSingularity  : "R_tidyverse.sif"
 BCFSingularity: "bcftools_v1.16.sif"
 
 druglistpres  : "alea/dispensed.csv"
-druglistdisp  : "alea/dispensed.csv"
+druglistdisp  : "alea/prescribed.csv"
 #druglistfile  : "Drug_List.tsv"
 #idlistfile    : "idlist.tsv" 
 
