@@ -54,6 +54,7 @@ for(group in groups) {
 	
 	### Format Participant Haplotype Data
 	Haplotypes <- read.table(paste0(outdir,allele,"_Haplotype.tsv"), header = T,sep="\t")
+	Haplotypes$Genotype %>% gsub(0,"Homozygous-Reference",.) %>% gsub(1,"Heterozygous",.) %>% gsub(2,"Homozygous-Alternative",.) %>% factor(.,levels=c("Homozygous-Reference","Heterozygous","Homozygous-Alternative")) -> Haplotypes$Genotype_Written
 	Haplotypes$ID <- toupper(Haplotypes$ID) #converted here for consistency
 	
 	### Merge Participant Drug and Haplotype Data
@@ -92,9 +93,7 @@ for(group in groups) {
 	Haplotypes$DrugStatus[Haplotypes$ID %in% Miss_ID] <- paste0("Not ",group,"\n",str_to_title(drug))
 	
 	factor(Haplotypes$DrugStatus,levels=c(paste0(group,"\n",str_to_title(drug)),paste0("Not ",group,"\n",str_to_title(drug)))) -> Haplotypes$DrugStatus
-	
-	Haplotypes$Genotype %>% gsub(0,"Homozygous-Reference",.) %>% gsub(1,"Heterozygous",.) %>% gsub(2,"Homozygous-Alternative",.) %>% factor(.,levels=c("Homozygous-Reference","Heterozygous","Homozygous-Alternative")) -> Haplotypes$Genotype_Written
-	
+		
 	plot <- ggplot(data=Haplotypes,aes(x=Genotype_Written)) +
 	    facet_wrap(~ DrugStatus,drop = FALSE) +
 	    scale_y_continuous(expand = c(0,0),limits=c(0,nrow(Haplotypes))) +
