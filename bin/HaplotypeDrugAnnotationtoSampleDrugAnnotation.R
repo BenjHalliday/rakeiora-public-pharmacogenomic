@@ -75,7 +75,7 @@ for(group in groups) {
 		
 		left_join(Sample_Index_HapDrug_Filter,HaplotypeAnnotations_Filter,by="Drug") -> Sample_Index_HapDrug_Annotations
 		write.table(Sample_Index_HapDrug_Annotations, file = paste0(outdir,allele,"_Haplotype_Annotation_Summary_",group,"_",drug,".tsv"),sep="\t",row.names=F)
-	} else {}
+	} else {
 		drugs <- data.frame(matrix(ncol = 2, nrow = 0)) %>% `colnames<-`(c("ID","Drug"))	
 		
 		### Format Participant Haplotype Data
