@@ -84,7 +84,8 @@ for(group in groups) {
 		Haplotypes$ID <- toupper(Haplotypes$ID) #converted here for consistency
 
 		### Merge Participant Drug and Haplotype Data
-		Sample_Index <- left_join(Haplotypes,drugs)
+		Sample_Index <- Haplotypes
+		Haplotypes$Drug <- NULL
 		write.table(Sample_Index, file = paste0(outdir,allele,"_Haplotype_Annotation_Summary_",group,".tsv"),sep="\t",row.names=F)
 		
 		### Format PharmGKB Annotation Data
