@@ -85,7 +85,7 @@ for(group in groups) {
 
 		### Merge Participant Drug and Haplotype Data
 		Sample_Index <- Haplotypes
-		Haplotypes$Drug <- NULL
+		Sample_Index$Drug <- NA
 		write.table(Sample_Index, file = paste0(outdir,allele,"_Haplotype_Annotation_Summary_",group,".tsv"),sep="\t",row.names=F)
 		
 		### Format PharmGKB Annotation Data
